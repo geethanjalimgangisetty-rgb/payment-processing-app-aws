@@ -74,9 +74,6 @@ jobs:
     name: Terraform Plan
     needs: terraform_validate
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write   # Explicitly set at job level
     defaults:
       run:
         working-directory: ./common-infrastructure-setup
@@ -103,15 +100,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tf-plan-file
-          path: common-infrastructure-setup/tfplan
+          path: |
+              common-infrastructure-setup/tfplan
+              common-infrastructure-setup/.terraform.lock.hcl
 
   terraform_apply:
     name: Terraform Apply
     needs: terraform_plan
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write   # Explicitly set at job level
     defaults:
       run:
         working-directory: ./common-infrastructure-setup
@@ -127,16 +123,15 @@ jobs:
           audience: sts.amazonaws.com
 
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.7.5
-      - name: Terraform Init
-        run: terraform init -input=false
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
           name: tf-plan-file
           path: common-infrastructure-setup/
-
+      - name: Terraform Init
+        run: terraform init -input=false
       - name: Terraform Apply
         run: terraform apply -input=false tfplan
