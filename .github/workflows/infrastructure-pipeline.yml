@@ -126,12 +126,13 @@ jobs:
         uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.7.5
+      - name: Terraform Init
+        run: terraform init -input=false
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
           name: tf-plan
-          path: .
-      - name: Terraform Init
-        run: terraform init -input=false
+          path: common-infrastructure-setup/
+      
       - name: Terraform Apply
         run: terraform apply -input=false tfplan
