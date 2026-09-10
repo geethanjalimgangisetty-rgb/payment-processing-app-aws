@@ -99,7 +99,7 @@ jobs:
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tf-plan-file
+          name: tf-plan
           path: |
               common-infrastructure-setup/tfplan
               common-infrastructure-setup/.terraform.lock.hcl
@@ -129,8 +129,8 @@ jobs:
       - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
-          name: tf-plan-file
-          path: common-infrastructure-setup/
+          name: tf-plan
+          path: .
       - name: Terraform Init
         run: terraform init -input=false
       - name: Terraform Apply
