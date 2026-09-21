@@ -29,7 +29,10 @@ module "iam_policy" {
           "iam:GetPolicy",
           "iam:GetPolicyVersion",
           "iam:ListPolicyVersions",
-          "iam:ListRolePolicies"
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:CreatePolicyVersion",
+          "iam:TagRole"
         ]
         Resource = [
           "arn:aws:iam::${var.account}:role/github_runner_access_role*",
