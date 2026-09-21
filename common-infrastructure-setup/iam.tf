@@ -13,12 +13,33 @@ module "iam_policy" {
         Effect = "Allow"
         Action = [
           "s3:*",
-          "dynamodb:*"
+          "dynamodb:*",
+          "iam:GetPolicy",
+          "iam:GetPolicyVersion",
+          "iam:GetRole",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListPolicyVersions",
+          "iam:ListInstanceProfilesForRole"
         ]
         Resource = [
           "arn:aws:s3:::${var.s3_bucket_name}",
           "arn:aws:dynamodb:${var.aws_region}:${var.account}:table/${var.dynamo_table}"
         ]
+      },
+       {
+        Sid    = "ReadManagedRole"
+        Effect = "Allow"
+        Action = [
+          "iam:GetRole",
+          "iam:GetPolicy",
+          "iam:GetPolicyVersion",
+          "iam:ListPolicyVersions",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListInstanceProfilesForRole"
+        ]
+        Resource = "arn:aws:iam::${var.account}:role/github_runner_access_role"
       }
     ]
   })
