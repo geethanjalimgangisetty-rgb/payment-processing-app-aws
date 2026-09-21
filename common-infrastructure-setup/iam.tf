@@ -27,7 +27,7 @@ module "iam_policy" {
           "arn:aws:dynamodb:${var.aws_region}:${var.account}:table/${var.dynamo_table}"
         ]
       },
-       {
+      {
         Sid    = "ReadManagedRole"
         Effect = "Allow"
         Action = [
